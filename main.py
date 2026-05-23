@@ -1,6 +1,6 @@
 import logging
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from telegram.ext import Application, CommandHandler, ContextTypes
 from telegram.error import TelegramError
 
@@ -46,7 +46,8 @@ def get_uzs_rate() -> float | None:
 
 def format_message(price_usd: float, uzs_rate: float) -> str:
     price_uzs = int(price_usd * uzs_rate)
-    now = datetime.now().strftime("%H:%M")
+    tz = timezone(timedelta(hours=5))  # UTC+5 Ташкент
+    now = datetime.now(tz).strftime("%H:%M")
     return (
         f"💎 <b>TON Price $ / UZS</b>\n"
         f"💵 <b>{price_usd:.2f}$</b>\n"
