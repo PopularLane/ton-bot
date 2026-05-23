@@ -19,12 +19,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_ton_price_usd() -> float | None:
-    """Получает курс TON/USDT с Binance."""
+    """Получает курс TON/USDT с OKX."""
     try:
-        url = "https://api.binance.com/api/v3/ticker/price?symbol=TONUSDT"
+        url = "https://www.okx.com/api/v5/market/ticker?instId=TON-USDT"
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        return float(response.json()["price"])
+        data = response.json()
+        return float(data["data"][0]["last"])
     except Exception as e:
         logger.error(f"Ошибка TON цены: {e}")
         return None
